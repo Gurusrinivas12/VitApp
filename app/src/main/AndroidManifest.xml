@@ -14,9 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.VitApp"
         tools:targetApi="31">
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-xxxxxxxxxxxxxxxx~yyyyyyyyyy"/>
+
         <activity
             android:name=".HomeActivity"
             android:exported="true"

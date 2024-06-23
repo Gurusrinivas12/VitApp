@@ -1,5 +1,4 @@
 [versions]
-googlePlayServicesAds = "23.1.0"
 activity = "1.9.0"
 agp = "8.5.0"
 appcompat = "1.7.0"
@@ -55,7 +54,6 @@ retrofit2-kotlinx-serialization-converter = { module = "com.jakewharton.retrofit
 androidx-foundation-android = { group = "androidx.compose.foundation", name = "foundation-android", version.ref = "foundationAndroid" }
 androidx-material3-android = { group = "androidx.compose.material3", name = "material3-android", version.ref = "material3Android" }
 mediation-test-suite = { group = "com.google.android.ads", name = "mediation-test-suite", version.ref = "mediationTestSuite" }
-google-play-services-ads = { module = "com.google.android.gms:play-services-ads", version.ref = "googlePlayServicesAds" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

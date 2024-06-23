@@ -1,5 +1,5 @@
 package com.example.vitapp
-import com.example.vitapp.databinding.ActivityHomeBinding
+
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -7,39 +7,45 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.example.vitapp.MarsAdapter
+import com.example.vitapp.R
+import com.example.vitapp.databinding.ActivityHomeBinding
 import com.example.vitapp.network.MarsApi
 import com.example.vitapp.network.MarsPhoto
-import com.google.android.ads.mediationtestsuite.activities.HomeActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class HomeActivity : AppCompatActivity() {
-    private val TAG = HomeActivity::class.java.simpleName
+//wet code --- dry code -- repetative lines removed
+class HomeActivity : AppCompatActivity(){
+    var TAG = HomeActivity::class.java.simpleName    //"HomeActivity"
 
     private lateinit var binding: ActivityHomeBinding
+    val photoMarsDatabinding = MarsPhoto("007","moonimage.com")
 
-    //private lateinit var marsRecyclerView: RecyclerView
-
-    private lateinit var marsAdapter: MarsAdapter
-    private var photos: List<MarsPhoto> = ArrayList()
+    //lateinit var marsRecyclerView:RecyclerView
+    lateinit var marsAdapter: MarsAdapter
+    lateinit var photos:List<MarsPhoto>
+    //  lateinit var imageView: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
-        marsAdapter = MarsAdapter(photos)
-        //marsRecyclerView.adapter = marsAdapter
-        // setContentView(R.layout.activity_home)
-        binding = ActivityHomeBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        val binding: ActivityHomeBinding = DataBindingUtil.setContentView(this, R.layout.activity_home)
+        /* var homeTextView:TextView = findViewById(R.id.tvHome)
+         homeTextView.setText(photoMarsDatabinding.imgSrc)*/
+        //binding.marsphotoxml = photoMarsDatabinding
 
         // imageView = findViewById(R.id.imageView)
         // marsRecyclerView = findViewById(R.id.recyclerViewUrls)
         binding.recyclerViewUrls.layoutManager = LinearLayoutManager(this)
+        photos = ArrayList()
+        marsAdapter = MarsAdapter(photos)
+        binding.recyclerViewUrls.adapter = marsAdapter
+
+        // marsAdapter = MarsAdapter(photos)
 
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -48,24 +54,30 @@ class HomeActivity : AppCompatActivity() {
             insets
         }
 
-        getMarsPhotos()
+
     }
+
 
     private fun getMarsPhotos() {
         GlobalScope.launch(Dispatchers.Main) {
-            try {
-                binding.recyclerViewUrls.adapter = marsAdapter
-                val listMarsPhotos = MarsApi.retrofitService.getPhotos()
-                marsAdapter.listMarsPhotos = listMarsPhotos
-                marsAdapter.notifyDataSetChanged()
-                Log.i(TAG, "Number of photos: ${listMarsPhotos.size}")
-            } catch (e: Exception) {
-                Log.e(TAG, "Failed to load Mars photos", e)
-            }
+            //launching coroutines on the main thread is not advisable
+            var listMarsPhotos =   MarsApi.retrofitService.getPhotos()
+            // photos = listMarsPhotos
+            marsAdapter.listMarsPhotos = listMarsPhotos
+            //import coil.load
+            marsAdapter.notifyDataSetChanged()
+            //   var tvHome:TextView = findViewById(R.id.tvHome)
+//            tvHome.setText(listMarsPhotos.get(1).imgSrc)
+            //  binding.imageView.load()
+            Log.i("homeactiviy",listMarsPhotos.size.toString())
+            Log.i("homeactivity-url",listMarsPhotos.get(1).imgSrc)
+
+
         }
     }
 
     fun getJson(view: View) {
         getMarsPhotos()
     }
+
 }

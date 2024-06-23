@@ -79,5 +79,4 @@ dependencies {
     implementation (libs.converter.moshi)
 
     implementation (libs.coil)
-    implementation(libs.google.play.services.ads)
 }
